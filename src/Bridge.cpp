@@ -14,16 +14,17 @@ bool IsPlayer(const RE::Actor *actor) {
 
 Sex GetSex(const RE::Actor *actor) {
     auto npc = actor->GetNPC();
-    if (npc != NULL)
+    if (npc == NULL)
     {
-        auto sex = static_cast<std::uint32_t>( npc->GetSex() );
-        if (sex == 1) {
-            return Sex::Female;
-        } else {
-            return Sex::Male;
-        }
+        return Sex::None;
     }
-    return Sex::None;
+
+    auto sex = static_cast<std::uint32_t>( npc->GetSex() );
+    if (sex == 1) {
+        return Sex::Female;
+    } else {
+        return Sex::Male;
+    }
 }
 
 const RE::TESRace* GetRace(const RE::Actor *actor) {
@@ -54,17 +55,7 @@ float GetPlayerActorValue(rust::Str editorId) {
         {
             auto a_info = (RE::ActorValueInfo*) form;
             float actorValue = player->GetActorValue( (*a_info) );
-            // lb_log_info(std::format("Read actor value {} from formId={:x}: {}", actorValueEditorId, form->formID, actorValue));
             return actorValue;
-        }
-        else 
-        {
-            // TODO fixor
-            // lb_log_error(
-            //     std::format("Editor id {} with formID={:x} is not actor value, form type: {:x}", 
-            //     actorValueEditorId, 
-            //     form->formID, 
-            //     static_cast<unsigned>(formType)));
         }
     }
     return 0;
@@ -115,16 +106,8 @@ std::uint32_t GetSavedFormType(const RE::TESForm* form) {
 // NiAVObject
 const RE::NiAVObject* GetBone(const RE::Actor *actor, rust::Str bone) 
 {
-    if (actor == NULL)
+    if (actor == NULL || actor->Get3D() == NULL)
     {
-        // TODO; Fixor
-        // lb_log_error("actor null");
-        return NULL;
-    }
-    if (actor->Get3D() == NULL)
-    {
-        // TODO: Fixor
-        // lb_log_error("3d null");
         return NULL;
     }
     return actor->Get3D()->GetObjectByName( (std::string) bone );   

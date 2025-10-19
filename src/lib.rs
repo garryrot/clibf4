@@ -2,6 +2,8 @@ use bridge::ffi_bridge::*;
 
 pub mod bridge;
 
+// TESForm
+
 #[derive(Clone)]
 pub struct UnsafeTESFormPtr {
     ptr: *const TESForm
@@ -31,6 +33,8 @@ impl From<UnsafeTESRacePtr> for UnsafeTESFormPtr {
     }
 }
 
+// Actor
+
 #[derive(Clone)]
 pub struct UnsafeActorPtr {
     pub ptr: *const Actor,
@@ -54,12 +58,16 @@ impl UnsafeActorPtr {
     }
 }
 
+// AvObject
+
 #[derive(Clone)]
 pub struct UnsafeAvObjectPtr {
     pub name: String,
     pub ptr: *const NiAVObject,
 }
 unsafe impl Send for UnsafeAvObjectPtr {}
+
+// TESRace
 
 #[derive(Clone)]
 pub struct UnsafeTESRacePtr {
